@@ -13,5 +13,5 @@ func main() {
 	fmt.Println("Стоимость работ:")
 	fmt.Println(order.CalculateCost())
 	//aaaa
-	//a
+	//ab
 }
