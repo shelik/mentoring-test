@@ -31,26 +31,32 @@ func (d Plaster) Expense() float64 {
 }
 
 func (d Plaster) Price() float64 {
-	return 25
+	return 1
 }
 
 func (s Satin) Price() float64 {
-	return 35
+	return 2
 }
 
 func (p Putty) Price() float64 {
-	return 45
+	return 12
 }
 
 func GetMaterial() Materials {
 	var mtype int
 	var mat Materials
 
-	fmt.Println("Введите тип материала: (1. Satin. )")
+	fmt.Println("Введите тип материала:\n 1 - Satin\n 2 - Putty\n 3 - Plaster")
 	fmt.Scanln(&mtype)
 
 	if mtype == 1 {
 		mat = Satin{}
+	}
+	if mtype == 2 {
+		mat = Putty{}
+	}
+	if mtype == 3 {
+		mat = Plaster{}
 	}
 
 	return mat
