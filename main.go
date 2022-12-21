@@ -10,7 +10,9 @@ func main() {
 		material: GetMaterial(),
 		surface:  GetSurface(),
 	}
+
 	fmt.Println("Стоимость работ:")
 	fmt.Println(order.CalculateCost())
-	
+	//a bank aok rabota
+
 }

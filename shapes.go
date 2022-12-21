@@ -19,16 +19,20 @@ type Circle struct {
 	radius float64
 }
 
-func NewCircle() Circle {
+func NewCircle() Shape {
+
 	var c Circle
+
 	fmt.Println("Enter radius:")
 	fmt.Scanln(&c.radius)
 
 	return c
 }
 
-func NewSquare() Square {
+func NewSquare() Shape {
+
 	var s Square
+
 	fmt.Println("Enter height:")
 	fmt.Scanln(&s.height)
 	fmt.Println("Enter width:")
@@ -37,8 +41,10 @@ func NewSquare() Square {
 	return s
 }
 
-func NewRectangle() Rectangle {
+func NewRectangle() Shape {
+
 	var r Rectangle
+
 	fmt.Println("Enter height:")
 	fmt.Scanln(&r.height)
 	fmt.Println("Enter width:")
@@ -60,21 +66,28 @@ func (s Square) Area() float64 {
 }
 
 func GetSurface() Shape {
+
+	type SelectSurface map[int]string
+
+	var shapes = map[string]func() Shape{
+		"Circle":    NewCircle,
+		"Square":    NewSquare,
+		"Rectangle": NewRectangle,
+	}
+
+	s := SelectSurface{
+		1: "Circle",
+		2: "Square",
+		3: "Rectangle",
+	}
+
 	var stype int
-	var surf Shape
 
 	fmt.Println("Введите тип плоскости:\n 1 - Circle\n 2 - Square\n 3 - Rectangle")
 	fmt.Scanln(&stype)
 
-	if stype == 1 {
-		surf = NewCircle()
-	}
-	if stype == 2 {
-		surf = NewSquare()
-	}
-	if stype == 3 {
-		surf = NewRectangle()
-	}
+	KeyShapes := s[stype]
+	ValueShapes := shapes[KeyShapes]
 
-	return surf
+	return ValueShapes()
 }
