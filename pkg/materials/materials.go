@@ -2,6 +2,11 @@ package materials
 
 import "fmt"
 
+type Materials interface {
+	Expense() float64
+	Price() float64
+}
+
 type Satin struct { //satingips
 	price   float64 //2$ - kg
 	expense float64 //1.5kg - metr
