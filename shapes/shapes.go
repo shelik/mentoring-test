@@ -1,8 +1,10 @@
-package main
+package shapes
 
 import (
 	"fmt"
 	"math"
+
+	orders "github.com/shelik/mentoring-test/orders"
 )
 
 type Square struct {
@@ -19,7 +21,7 @@ type Circle struct {
 	radius float64
 }
 
-func NewCircle() Shape {
+func NewCircle() orders.Shape {
 
 	var c Circle
 
@@ -29,7 +31,7 @@ func NewCircle() Shape {
 	return c
 }
 
-func NewSquare() Shape {
+func NewSquare() orders.Shape {
 
 	var s Square
 
@@ -41,7 +43,7 @@ func NewSquare() Shape {
 	return s
 }
 
-func NewRectangle() Shape {
+func NewRectangle() orders.Shape {
 
 	var r Rectangle
 
@@ -65,11 +67,11 @@ func (s Square) Area() float64 {
 	return s.height * s.width
 }
 
-func GetSurface() Shape {
+func GetSurface() orders.Shape {
 
 	type SelectSurface map[int]string
 
-	var shapes = map[string]func() Shape{
+	var shapes = map[string]func() orders.Shape{
 		"Circle":    NewCircle,
 		"Square":    NewSquare,
 		"Rectangle": NewRectangle,

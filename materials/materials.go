@@ -1,11 +1,10 @@
 package materials
 
-import "fmt"
+import (
+	"fmt"
 
-type Materials interface {
-	Expense() float64
-	Price() float64
-}
+	orders "github.com/shelik/mentoring-test/orders"
+)
 
 type Satin struct { //satingips
 	price   float64 //2$ - kg
@@ -47,9 +46,9 @@ func (p Putty) Price() float64 {
 	return 12
 }
 
-func GetMaterial() Materials {
+func GetMaterial() orders.Materials {
 	var mtype int
-	var mat Materials
+	var mat orders.Materials
 
 	fmt.Println("Введите тип материала:\n 1 - Satin\n 2 - Putty\n 3 - Plaster")
 	fmt.Scanln(&mtype)

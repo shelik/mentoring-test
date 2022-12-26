@@ -10,10 +10,10 @@ type Materials interface {
 }
 
 type Order struct {
-	material Materials
-	surface  Shape
+	Material Materials
+	Surface  Shape
 }
 
 func (o *Order) CalculateCost() float64 {
-	return o.surface.Area() * o.material.Expense() * o.material.Price()
+	return o.Surface.Area() * o.Material.Expense() * o.Material.Price()
 }
