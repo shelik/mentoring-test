@@ -1,4 +1,4 @@
-package main
+package materials
 
 import "fmt"
 

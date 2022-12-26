@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	mat "github.com/shelik/mentoring-test/materials"
 )
 
 func main() {
 
 	order := Order{
-		material: GetMaterial(),
+		material: mat.GetMaterial(),
 		surface:  GetSurface(),
 	}
 
