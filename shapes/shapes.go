@@ -21,6 +21,27 @@ type Circle struct {
 	radius float64
 }
 
+type ShapeConstructor func() orders.Shape
+type ShapesCollection map[string]ShapeConstructor
+
+type Shaper struct {
+	shapes ShapesCollection
+}
+
+func NewShaper() *Shaper {
+	return &Shaper{
+		shapes: ShapesCollection{
+			"Circle":    NewCircle,
+			"Square":    NewSquare,
+			"Rectangle": NewRectangle,
+		},
+	}
+}
+
+func (s *Shaper) AddShape(name string, ctr ShapeConstructor) {
+	s.shapes[name] = ctr
+}
+
 func NewCircle() orders.Shape {
 
 	var c Circle
@@ -28,7 +49,7 @@ func NewCircle() orders.Shape {
 	fmt.Println("Enter radius:")
 	fmt.Scanln(&c.radius)
 
-	return c
+	return &c
 }
 
 func NewSquare() orders.Shape {
@@ -40,7 +61,7 @@ func NewSquare() orders.Shape {
 	fmt.Println("Enter width:")
 	fmt.Scanln(&s.width)
 
-	return s
+	return &s
 }
 
 func NewRectangle() orders.Shape {
@@ -52,44 +73,42 @@ func NewRectangle() orders.Shape {
 	fmt.Println("Enter width:")
 	fmt.Scanln(&r.width)
 
-	return r
+	return &r
 }
 
-func (c Circle) Area() float64 {
+func (c *Circle) Area() float64 {
 	return math.Pi * math.Pow(c.radius, 2)
 }
 
-func (r Rectangle) Area() float64 {
+func (r *Rectangle) Area() float64 {
 	return r.height * r.width
 }
 
-func (s Square) Area() float64 {
+func (s *Square) Area() float64 {
 	return s.height * s.width
 }
 
-func GetSurface() orders.Shape {
+func (s *Shaper) GetSurface() orders.Shape {
 
 	type SelectSurface map[int]string
 
-	var shapes = map[string]func() orders.Shape{
-		"Circle":    NewCircle,
-		"Square":    NewSquare,
-		"Rectangle": NewRectangle,
-	}
+	ss := SelectSurface{}
+	n := 1
 
-	s := SelectSurface{
-		1: "Circle",
-		2: "Square",
-		3: "Rectangle",
+	var fstr string
+	for key := range s.shapes {
+		fstr = fmt.Sprintf("%s\n %d - %s", fstr, n, key)
+		ss[n] = key
+		n++
 	}
 
 	var stype int
 
-	fmt.Println("Введите тип плоскости:\n 1 - Circle\n 2 - Square\n 3 - Rectangle")
+	fmt.Printf("Введите тип плоскости:%s\n", fstr)
 	fmt.Scanln(&stype)
 
-	KeyShapes := s[stype]
-	ValueShapes := shapes[KeyShapes]
+	KeyShapes := ss[stype]
+	ValueShapes := s.shapes[KeyShapes]
 
 	return ValueShapes()
 }

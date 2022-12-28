@@ -47,6 +47,7 @@ func (p Putty) Price() float64 {
 }
 
 func GetMaterial() orders.Materials {
+
 	var mtype int
 	var mat orders.Materials
 
