@@ -8,6 +8,27 @@ import (
 	shapes "github.com/shelik/mentoring-test/shapes"
 )
 
+type deco struct {
+	price   float64
+	expense float64
+}
+
+func newDeco() orders.Materials {
+	return &deco{
+		price:   2,
+		expense: 2,
+	}
+}
+
+func (d *deco) Expense() float64 {
+	return d.expense
+
+}
+
+func (d *deco) Price() float64 {
+	return d.price
+}
+
 type Triangle struct {
 	height float64
 	width  float64
@@ -31,11 +52,12 @@ func (r Triangle) Area() float64 {
 
 func main() {
 	shaper := shapes.NewShaper()
-
+	materialer := mat.NewMaterialer()
 	shaper.AddShape("Triangle", NewTriangle)
+	materialer.AddMaterial("deco", newDeco)
 
 	order := orders.Order{
-		Material: mat.GetMaterial(),
+		Material: materialer.GetMaterial(),
 		Surface:  shaper.GetSurface(),
 	}
 

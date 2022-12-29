@@ -6,63 +6,85 @@ import (
 	orders "github.com/shelik/mentoring-test/orders"
 )
 
-type Satin struct { //satingips
+type Material struct { //satingips
 	price   float64 //2$ - kg
 	expense float64 //1.5kg - metr
 }
 
-type Putty struct { //po derevu shpaklevka
-	price   float64 //12$ - kg
-	expense float64 //1kg - metr
+type MaterialConstructor func() orders.Materials
+type MaterialsCollection map[string]MaterialConstructor
+
+type Materialer struct {
+	materials MaterialsCollection
 }
 
-type Plaster struct { //
-	price   float64 //1$ - kg
-	expense float64 //1kg - m2
-}
+func NewMaterialer() *Materialer {
 
-func (s Satin) Expense() float64 {
-	return 1.5
-
-}
-
-func (p Putty) Expense() float64 {
-	return 1
-}
-
-func (d Plaster) Expense() float64 {
-	return 1
-}
-
-func (d Plaster) Price() float64 {
-	return 1
-}
-
-func (s Satin) Price() float64 {
-	return 2
-}
-
-func (p Putty) Price() float64 {
-	return 12
-}
-
-func GetMaterial() orders.Materials {
-
-	var mtype int
-	var mat orders.Materials
-
-	fmt.Println("Введите тип материала:\n 1 - Satin\n 2 - Putty\n 3 - Plaster")
-	fmt.Scanln(&mtype)
-
-	if mtype == 1 {
-		mat = Satin{}
+	return &Materialer{
+		materials: MaterialsCollection{
+			"Satin":   NewSatin,
+			"Putty":   NewPutty,
+			"Plaster": NewPlaster,
+		},
 	}
-	if mtype == 2 {
-		mat = Putty{}
+}
+
+func NewSatin() orders.Materials {
+	return &Material{
+		price:   2.0,
+		expense: 1.5,
 	}
-	if mtype == 3 {
-		mat = Plaster{}
+}
+
+func NewPutty() orders.Materials {
+	return &Material{
+		price:   12,
+		expense: 1,
+	}
+}
+
+func NewPlaster() orders.Materials {
+	return &Material{
+		price:   1,
+		expense: 1,
+	}
+}
+
+func (m *Material) Expense() float64 {
+	return m.expense
+
+}
+
+func (m *Material) Price() float64 {
+	return m.price
+}
+
+func (m *Materialer) AddMaterial(name string, ctr MaterialConstructor) {
+	m.materials[name] = ctr
+}
+
+func (m *Materialer) GetMaterial() orders.Materials {
+
+	type SelectMaterial map[int]string
+
+	sm := SelectMaterial{}
+	n := 1
+
+	var fstr string
+	for key := range m.materials {
+		fstr = fmt.Sprintf("%s\n %d - %s", fstr, n, key)
+		sm[n] = key
+		n++
 	}
 
-	return mat
+	var stype int
+
+	fmt.Printf("Введите тип Материала:%s\n", fstr)
+	fmt.Scanln(&stype)
+
+	KeyMaterials := sm[stype]
+	ValueMaterials := m.materials[KeyMaterials]
+
+	return ValueMaterials()
+
 }
